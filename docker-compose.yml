@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: fastapi_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fastapi_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  fastapi:
+    image: python:3.14
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: sh -c "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && poetry run uvicorn main:app --host 0.0.0.0 --reload"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=development
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
