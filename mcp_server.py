@@ -1,34 +1,48 @@
 from fastmcp import FastMCP  # pyright: ignore[reportMissingImports]
+from pydantic import BaseModel, Field
+from typing import Literal
 
-# สร้าง MCP server (ตาม tutorial - version ง่ายๆ)
+# สร้าง MCP server
 mcp = FastMCP("FastAPI MCP Server")
 
-# Tool: Greet (ตาม tutorial)
-@mcp.tool()
-def greet(name: str) -> str:
-    """Greet someone by name"""
-    return f"Hello, {name}!"
+# Pydantic Models for Tool Parameters
+class GreetInput(BaseModel):
+    """Input model for greet tool"""
+    name: str = Field(..., description="Name of the person to greet", example="John")
 
-# Tool: Calculate (ตัวอย่างเพิ่มเติม)
+
+class CalculateInput(BaseModel):
+    """Input model for calculate tool"""
+    a: float = Field(..., description="First number", example=10.0)
+    b: float = Field(..., description="Second number", example=5.0)
+    operation: Literal["add", "subtract", "multiply", "divide"] = Field(
+        default="add",
+        description="Mathematical operation to perform",
+        example="add"
+    )
+
+
+# Tool: Greet
 @mcp.tool()
-def calculate(a: float, b: float, operation: str = "add") -> float:
-    """Perform a simple calculation
-    
-    Args:
-        a: First number
-        b: Second number
-        operation: Operation to perform (add, subtract, multiply, divide)
-    """
-    if operation == "add":
-        return a + b
-    elif operation == "subtract":
-        return a - b
-    elif operation == "multiply":
-        return a * b
-    elif operation == "divide":
-        if b == 0:
+def greet(input: GreetInput) -> str:
+    """Generate a personalized greeting message for the given name."""
+    return f"Hello, {input.name}!"
+
+
+# Tool: Calculate
+@mcp.tool()
+def calculate(input: CalculateInput) -> float:
+    """Perform basic arithmetic calculations (add, subtract, multiply, divide) between two numbers."""
+    if input.operation == "add":
+        return input.a + input.b
+    elif input.operation == "subtract":
+        return input.a - input.b
+    elif input.operation == "multiply":
+        return input.a * input.b
+    elif input.operation == "divide":
+        if input.b == 0:
             return 0.0
-        return a / b
+        return input.a / input.b
     else:
         return 0.0
 
