@@ -12,7 +12,10 @@ class Settings(BaseSettings):
     api_key: str = ""
     max_items: int = 0
     environment: str = ""
-    mcp_server_url: str = "http://localhost:8001/mcp"    
+    # MCP Server Configuration
+    # ใช้ local server ถ้าไม่มี token, ใช้ deployed server ถ้ามี token
+    mcp_server_url: str = "http://localhost:8001/mcp"  # Default: local server
+    mcp_bearer_token: str = ""  # Bearer token สำหรับ deployed server (ถ้ามี)
     
     model_config = SettingsConfigDict(
         env_file=".env",
