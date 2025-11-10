@@ -11,7 +11,8 @@ class Settings(BaseSettings):
     database_url: str = ""
     api_key: str = ""
     max_items: int = 0
-    environment: str = ""    
+    environment: str = ""
+    mcp_server_url: str = "http://localhost:8001/mcp"    
     
     model_config = SettingsConfigDict(
         env_file=".env",
