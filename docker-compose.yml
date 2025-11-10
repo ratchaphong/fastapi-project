@@ -34,24 +34,24 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      # mcp:
-      #   condition: service_started
+      mcp:
+        condition: service_started
 
   # MCP Server (commented out - using deployed MCP server instead)
   # Uncomment below to run local MCP server for testing
-  # mcp:
-  #   image: python:3.14
-  #   container_name: fastapi_mcp
-  #   working_dir: /app
-  #   ports:
-  #     - "8001:8001"
-  #   volumes:
-  #     - .:/app
-  #   env_file:
-  #     - .env
-  #   command: sh -c "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && poetry run python mcp_server.py"
-  #   environment:
-  #     - PYTHONUNBUFFERED=1
+  mcp:
+    image: python:3.14
+    container_name: fastapi_mcp
+    working_dir: /app
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: sh -c "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && poetry run python mcp_server.py"
+    environment:
+      - PYTHONUNBUFFERED=1
 
 volumes:
   postgres_data:
