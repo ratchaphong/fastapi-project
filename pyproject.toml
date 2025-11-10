@@ -6,14 +6,15 @@ authors = [
     {name = "BB",email = "ratchaphongc1@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14,<4.0"
 dependencies = [
     "fastapi (>=0.121.0,<0.122.0)",
     "uvicorn[standard] (>=0.38.0,<0.39.0)",
     "pydantic-settings (>=2.11.0,<3.0.0)",
     "tortoise-orm (>=0.25.1,<0.26.0)",
     "asyncpg (>=0.30.0,<0.31.0)",
-    "email-validator (>=2.3.0,<3.0.0)"
+    "email-validator (>=2.3.0,<3.0.0)",
+    "fastmcp (>=2.13.0.2,<3.0.0.0)"
 ]
 
 

@@ -11,12 +11,14 @@ class Settings(BaseSettings):
     database_url: str = ""
     api_key: str = ""
     max_items: int = 0
-    environment: str = ""    
+    environment: str = ""
+    mcp_server_url: str = "http://localhost:8001/mcp"    
     
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"  # Ignore extra fields that are not defined in the class (e.g., POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB)
     )
 
 
